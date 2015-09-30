@@ -5,7 +5,6 @@ function getRaceEvent(lat, lon){
                 document.getElementById("txtMessage").innerHTML = xmlhttp.responseText;
             }
         }
-        //event_id.addEventListener("change", showMessage());
         xmlhttp.open("GET", 'http://dispatch.nasasafety.com/trackflag/geteventajax.php?lat='+lat.toString()+'&lon='+lon.toString(), true);
         xmlhttp.send();
 }
@@ -18,7 +17,7 @@ function clearMessage(){
     document.getElementById("txtMessage").innerHTML = "";
 }
 
-function showMessage() {
+function getGlobalCommand() {
             var xmlhttp = new XMLHttpRequest();
             xmlhttp.onreadystatechange = function() {
                 if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
@@ -30,16 +29,16 @@ function showMessage() {
             xmlhttp.send();
 
         randomrefresh = 2 * 1000;
-        setTimeout(showMessage, randomrefresh );
+        setTimeout(getGlobalCommand, randomrefresh );
 }
 
-function checkforCommand() {
+function checkforGlobalCommand() {
 			if ( document.getElementById("runscript").innerHTML != "" ) {
 			 		eval(document.getElementById("runscript").innerHTML);
 					document.getElementById("runscript").innerHTML = '';
 			}
        randomrefresh = 2 * 1000;
-       setTimeout(checkforCommand, randomrefresh );
+       setTimeout(checkforGlobalCommand, randomrefresh );
 }
 
 function getLocation() {
@@ -140,12 +139,12 @@ function showRestartFlag(){
 }
 
 function blinkWavingYellow(){
-    if(window.getComputedStyle(document.getElementById("dblyellowCanvasLeft")).visibility == 'visible'){
-        document.getElementById("dblyellowCanvasLeft").style.visibility = "hidden";
-        document.getElementById("dblyellowCanvasRight").style.visibility = "visible";
+    if(window.getComputedStyle(document.getElementById("wavyellowCanvasLeft")).visibility == 'visible'){
+        document.getElementById("wavyellowCanvasLeft").style.visibility = "hidden";
+        document.getElementById("wavyellowCanvasRight").style.visibility = "visible";
     }else{
-        document.getElementById("dblyellowCanvasLeft").style.visibility = "visible";
-        document.getElementById("dblyellowCanvasRight").style.visibility = "hidden";
+        document.getElementById("wavyellowCanvasLeft").style.visibility = "visible";
+        document.getElementById("wavyellowCanvasRight").style.visibility = "hidden";
     }
     setTimeout(blinkWavingYellow, 500 );
 }

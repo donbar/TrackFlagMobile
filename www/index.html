@@ -24,47 +24,20 @@
   </head>
   <body ng-app="trackflag">
     <form name='trackflag'>
-    <input type='text' id='event_id' name='event_id'></input>
-		<div id='runscript'></div>
+    <input type='hidden' id='event_id' name='event_id'></input>
+		<div id='runscript' style='display: none'></div>
+		<div id='runscriptlocal' style='display: none'></div>
 
-    <ion-pane>
-      <ion-content>
+
       <div id='divlogo'>
         <center><img src='img/nasalogo.png' border=0></center>
       </div>
       <div id="txtMessage"></div>
-			<div id="flagarea"></div>
+
+			<div class='container'>
+
+			<div class="globalflags">
       <center>
-      <span id="WavingYellow">
-
-        <canvas id="dblyellowCanvasLeft" width="200" height="100"></canvas>
-        <script>
-          var canvas = document.getElementById('dblyellowCanvasLeft');
-          var context = canvas.getContext('2d');
-
-          context.beginPath();
-          context.rect(0, 0, 200, 100);
-          context.fillStyle = 'yellow';
-          context.fill();
-          context.lineWidth = 1;
-          context.strokeStyle = 'black';
-          context.stroke();
-        </script>
-
-        <canvas id="dblyellowCanvasRight" width="200" height="100"></canvas>
-        <script>
-          var canvas = document.getElementById('dblyellowCanvasRight');
-          var context = canvas.getContext('2d');
-
-          context.beginPath();
-          context.rect(0, 0, 200, 100);
-          context.fillStyle = 'yellow';
-          context.fill();
-          context.lineWidth = 1;
-          context.strokeStyle = 'black';
-          context.stroke();
-        </script>
-      </span>
 
       <span id='divRedFlag'>
         <canvas id="redFlag" width="200" height="100"></canvas>
@@ -237,6 +210,43 @@
         </script>
       </span>
 
+		</div>
+		<div class='localflags'>
+
+      <span id="WavingYellow">
+
+        <canvas id="wavyellowCanvasLeft" width="200" height="100"></canvas>
+        <script>
+          var canvas = document.getElementById('wavyellowCanvasLeft');
+          var context = canvas.getContext('2d');
+
+          context.beginPath();
+          context.rect(0, 0, 200, 100);
+          context.fillStyle = 'yellow';
+          context.fill();
+          context.lineWidth = 1;
+          context.strokeStyle = 'black';
+          context.stroke();
+        </script>
+
+        <canvas id="wavyellowCanvasRight" width="200" height="100"></canvas>
+        <script>
+          var canvas = document.getElementById('wavyellowCanvasRight');
+          var context = canvas.getContext('2d');
+
+          context.beginPath();
+          context.rect(0, 0, 200, 100);
+          context.fillStyle = 'yellow';
+          context.fill();
+          context.lineWidth = 1;
+          context.strokeStyle = 'black';
+          context.stroke();
+        </script>
+      </span>
+			</div>
+			</center>
+
+
         <script>
           blinkWavingYellow();
           hideWavingYellow();
@@ -249,15 +259,16 @@
           hideRestartFlag();
         </script>
 
-    </center>
-      </ion-content>
-    </ion-pane>
+
+
+
+
 
     </form>
   </body>
   <script>
     getLocation();
-		checkforCommand();
+		checkforGlobalCommand();
 	</script>
 </html>
 

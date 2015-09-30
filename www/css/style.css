@@ -27,10 +27,14 @@ body {
     .applandscape {
         position:absolute;             /* position in the center of the screen */
         left: 0%;
-        top:10%;        
+        top:10%;
     }
 }
 .blink {
     animation:fade 3000ms infinite;
     -webkit-animation:fade 3000ms infinite;
 }
+
+div.container { background: #EEE; height: 100%; width: 100%; position:absolute;}
+div.globalflags{background: #999; height: 50%; width: 100%; text-align: center; vertical-align: middle; position:absolute; display: table-cell;}
+div.localflags{background: blue; height: 50%; width: 100%; text-align: center; vertical-align: middle; position:fixed; bottom: 0%; right:0%; display: table-cell;}
