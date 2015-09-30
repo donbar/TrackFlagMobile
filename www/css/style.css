@@ -1,0 +1,36 @@
+/* Empty. Add your own CSS if you like */
+
+
+body {
+    -webkit-touch-callout: none;                /* prevent callout to copy image, etc when tap to hold */
+    -webkit-text-size-adjust: none;             /* prevent webkit from resizing text to fit */
+    -webkit-user-select: none;                  /* prevent copy paste, to allow, change 'none' to 'text' */
+    background-color:#FFFFFF;
+    background-attachment:fixed;
+    font-family:'HelveticaNeue-Light', 'HelveticaNeue', Helvetica, Arial, sans-serif;
+    font-size:12px;
+    height:100%;
+    margin:0px;
+    padding:0px;
+    width:100%;
+}
+
+/* Portrait layout (default) */
+    .appportrait {
+        position:absolute;             /* position in the center of the screen */
+        left: 0%;
+        top:10%;
+                                       /* offset horizontal: half of text area width */
+    }
+
+    /* Landscape layout (with min-width) */
+    .applandscape {
+        position:absolute;             /* position in the center of the screen */
+        left: 0%;
+        top:10%;        
+    }
+}
+.blink {
+    animation:fade 3000ms infinite;
+    -webkit-animation:fade 3000ms infinite;
+}
