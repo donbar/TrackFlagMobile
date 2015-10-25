@@ -1,4 +1,6 @@
 <!DOCTYPE html>
+<meta http-equiv="Content-Security-Policy" content="default-src *; connect-src *; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline' 'unsafe-eval' http://trackflag.nasasafety.com ">
+
 <html>
   <head>
     <meta charset="utf-8">
@@ -12,7 +14,7 @@
     <script src="js/trackflag.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
   </head>
-  <body ng-app="trackflag">
+  <body ng-app="trackflag" onload="getRaceEvent();getGlobalCommand();">
     <form name='trackflag'>
       <input type='hidden' id='event_id' name='event_id'></input>
   		<div id='runscript' style='display: none'></div>
@@ -24,25 +26,24 @@
       <span id="txtMessage"></span>
   			<div id='container' class='container'>
   			<div id='globalflags' class="globalflags">
+          <canvas id="doubleyellowFlag"></canvas>
           <canvas id="redFlag"></canvas>
           <canvas id="greenFlag"></canvas>
           <canvas id="whiteFlag"></canvas>
           <canvas id="blackFlag"></canvas>
           <canvas id="safetyFlag"></canvas>
           <canvas id="restartFlag"></canvas>
-          <canvas id="doubleyellowFlag"></canvas>
+          <canvas id="checkeredFlag" class='checkered' style='display:none'></canvas>
+
     		</div>
   	    <div id='localflags' class='localflags'>
           <canvas id="standingYellow"></canvas>
           <canvas id="debrisFlag"></canvas>
           <canvas id="wavingYellow"></canvas>
         </div>
+      </div>
       </span>
 	  </form>
   </body>
-  <script>
-    getLocation();
-  	checkforGlobalCommand();
-  </script>
 </html>
 

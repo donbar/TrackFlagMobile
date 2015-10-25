@@ -1,6 +1,6 @@
 var wavingyellowTimeout;
 var geteventtimeout;
-function getRaceEvent(lat, lon){
+function getRaceEvent(){
         var xmlhttpevent = new XMLHttpRequest();
         xmlhttpevent.onreadystatechange = function() {
             if (xmlhttpevent.readyState == 4 && xmlhttpevent.status == 200) {
@@ -15,7 +15,7 @@ function getRaceEvent(lat, lon){
             }
 
         }
-        xmlhttpevent.open("GET", 'http://dispatch.nasasafety.com/trackflag/geteventajax.php?lat='+lat.toString()+'&lon='+lon.toString(), true);
+        xmlhttpevent.open("GET", 'https://trackflag.nasasafety.com/server/geteventajax.php', true);
         xmlhttpevent.send();
 }
 
@@ -24,6 +24,7 @@ function clearLogo(){
     document.getElementById("container").style.backgroundColor = "#c0c0c0";
     document.getElementById("globalflags").style.backgroundColor = "#c0c0c0";
     document.getElementById("localflags").style.backgroundColor = "#c0c0c0";
+    document.getElementById("container").display = "none";
 }
 
 function clearMessage(){
@@ -35,7 +36,7 @@ function getGlobalCommand() {
             xmlhttp.onreadystatechange = function() {
                 if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
                     document.getElementById("lostconnection").style.display = "none";
-                    document.getElementById("runscript").innerHTML = xmlhttp.responseText;
+                    eval(xmlhttp.responseText);
                 }else if((xmlhttp.status == 0 || xmlhttp.status == 404) && xmlhttp.readyState == 4){
                     // lost connection with server, clear screen and show oopsies div
                     hideDoubleYellowFlag();
@@ -45,43 +46,19 @@ function getGlobalCommand() {
                     hideRedFlag();
                     hideWhiteFlag();
                     hideBlackFlag();
+                    hideCheckeredFlag();
                     hideStandingYellowFlag();
                     hideDebrisFlag();
                     hidewavingYellow();
                     document.getElementById("lostconnection").style.display = "inline-block";
                 }
             }
-            var url = 'http://dispatch.nasasafety.com/trackflag/statusajax.php?event_id=' + document.getElementById('event_id').value.toString();
+            var url = 'https://trackflag.nasasafety.com/server/statusajax.php?event_id=' + document.getElementById('event_id').value.toString();
             xmlhttp.open("GET", url, true);
             xmlhttp.send();
 
-        randomrefresh = 2 * 1000;
+        randomrefresh = 500;
         setTimeout(getGlobalCommand, randomrefresh );
-}
-
-function checkforGlobalCommand() {
-
-			if ( document.getElementById("runscript").innerHTML != "" ) {
-			 		eval(document.getElementById("runscript").innerHTML);
-					document.getElementById("runscript").innerHTML = '';
-			}
-       randomrefresh = 500;
-       setTimeout(checkforGlobalCommand, randomrefresh );
-}
-
-function getLocation() {
-
-		navigator.geolocation.getCurrentPosition(gotLocation, noLocation);
-	}
-function noLocation(){
-	 // do nothing;
-}
-
-function gotLocation(position){
-		lat =  position.coords.latitude;
-		lon =  position.coords.longitude;
-
-		getRaceEvent(lat, lon);
 }
 
 function showError(error) {
@@ -112,8 +89,8 @@ function showRedFlag(scale){
     var canvas = document.getElementById('redFlag');
     var context = canvas.getContext('2d');
 
-    var clientHeight = document.getElementById('globalflags').clientHeight;   
-    var clientWidth = document.getElementById('globalflags').clientWidth * (1 / scale) - 2;
+    var clientHeight = document.getElementById('globalflags').clientHeight;
+    var clientWidth = document.getElementById('globalflags').clientWidth * (1 / scale) - 10;
 
     // resize the canvas
     canvas.height = clientHeight;
@@ -128,7 +105,7 @@ function showRedFlag(scale){
     context.stroke();
 
 
-    var textString = 'RED';
+    var textString = '';
     var fontsize = (clientWidth/textString.length);
     var divisor = '1.'+textString.length.toString();
     var textheight = (clientHeight / divisor);
@@ -137,7 +114,7 @@ function showRedFlag(scale){
     ctx.font=fontsize.toString()+"px Verdana";
     context.fillStyle = 'white';
     textWidth = ctx.measureText(textString ).width;
-    ctx.fillText(textString , (clientWidth/2) - (textWidth / 2), textheight);
+    //ctx.fillText(textString , (clientWidth/2) - (textWidth / 2), textheight);
 }
 
 
@@ -151,8 +128,8 @@ function showDoubleYellowFlag(scale){
     var canvas = document.getElementById('doubleyellowFlag');
     var context = canvas.getContext('2d');
 
-    var clientHeight = document.getElementById('globalflags').clientHeight;   
-    var clientWidth = document.getElementById('globalflags').clientWidth * (1 / scale) - 2;
+    var clientHeight = document.getElementById('globalflags').clientHeight;
+    var clientWidth = document.getElementById('globalflags').clientWidth * (1 / scale) - 10;
 
     // resize the canvas
     canvas.height = clientHeight;
@@ -167,7 +144,7 @@ function showDoubleYellowFlag(scale){
     context.stroke();
 
 
-    var textString = 'YELLOW';
+    var textString = '';
     var fontsize = (clientWidth/textString.length);
     var divisor = '1.'+textString.length.toString();
     var textheight = (clientHeight / divisor);
@@ -176,8 +153,9 @@ function showDoubleYellowFlag(scale){
     ctx.font=fontsize.toString()+"px Verdana";
     context.fillStyle = 'black';
     textWidth = ctx.measureText(textString ).width;
-    ctx.fillText(textString , (clientWidth/2) - (textWidth / 2), textheight);
+    //ctx.fillText(textString , (clientWidth/2) - (textWidth / 2), textheight);
 }
+
 
 
 function hideGreenFlag(){
@@ -190,8 +168,8 @@ function showGreenFlag(scale){
     var canvas = document.getElementById('greenFlag');
     var context = canvas.getContext('2d');
 
-    var clientHeight = document.getElementById('globalflags').clientHeight;   
-    var clientWidth = document.getElementById('globalflags').clientWidth * (1 / scale) - 2;
+    var clientHeight = document.getElementById('globalflags').clientHeight;
+    var clientWidth = document.getElementById('globalflags').clientWidth * (1 / scale) - 10;
 
     // resize the canvas
     canvas.height = clientHeight;
@@ -206,7 +184,7 @@ function showGreenFlag(scale){
     context.stroke();
 
 
-    var textString = 'GREEN';
+    var textString = '';
     var fontsize = (clientWidth/textString.length);
     var divisor = '1.'+textString.length.toString();
     var textheight = (clientHeight / divisor);
@@ -215,7 +193,7 @@ function showGreenFlag(scale){
     ctx.font=fontsize.toString()+"px Verdana";
     context.fillStyle = 'white';
     textWidth = ctx.measureText(textString ).width;
-    ctx.fillText(textString , (clientWidth/2) - (textWidth / 2), textheight);
+    //ctx.fillText(textString , (clientWidth/2) - (textWidth / 2), textheight);
 }
 
 function hideWhiteFlag(){
@@ -228,8 +206,8 @@ function showWhiteFlag(scale){
     var canvas = document.getElementById('whiteFlag');
     var context = canvas.getContext('2d');
 
-    var clientHeight = document.getElementById('globalflags').clientHeight;   
-    var clientWidth = document.getElementById('globalflags').clientWidth * (1 / scale) - 2;
+    var clientHeight = document.getElementById('globalflags').clientHeight;
+    var clientWidth = document.getElementById('globalflags').clientWidth * (1 / scale) - 10;
 
     // resize the canvas
     canvas.height = clientHeight;
@@ -243,7 +221,7 @@ function showWhiteFlag(scale){
     context.strokeStyle = 'black';
     context.stroke();
 
-    var textString = 'WHITE';
+    var textString = '';
     var fontsize = (clientWidth/textString.length);
     var divisor = '1.'+textString.length.toString();
     var textheight = (clientHeight / divisor);
@@ -252,13 +230,35 @@ function showWhiteFlag(scale){
     ctx.font=fontsize.toString()+"px Verdana";
     context.fillStyle = 'black';
     textWidth = ctx.measureText(textString ).width;
-    ctx.fillText(textString , (clientWidth/2) - (textWidth / 2), textheight);
+    //ctx.fillText(textString , (clientWidth/2) - (textWidth / 2), textheight);
 
+}
+
+function hideCheckeredFlag(){
+    document.getElementById("checkeredFlag").style.display = "none";
+}
+
+
+function showCheckeredFlag(scale){
+    document.getElementById("checkeredFlag").style.display = "inline-block";
+
+    var canvas = document.getElementById('checkeredFlag');
+    var context = canvas.getContext('2d');
+
+    var clientHeight = document.getElementById('globalflags').clientHeight;
+    var clientWidth = document.getElementById('globalflags').clientWidth * (1 / scale) - 10;
+
+    // resize the canvas
+    canvas.height = clientHeight;
+    canvas.width = clientWidth;
+
+    canvas.style = 'checkered';
 }
 
 function hideBlackFlag(){
     document.getElementById("blackFlag").style.display = "none";
 }
+
 
 function showBlackFlag(scale){
     document.getElementById("blackFlag").style.display = "inline-block";
@@ -266,8 +266,8 @@ function showBlackFlag(scale){
     var canvas = document.getElementById('blackFlag');
     var context = canvas.getContext('2d');
 
-    var clientHeight = document.getElementById('globalflags').clientHeight;   
-    var clientWidth = document.getElementById('globalflags').clientWidth * (1 / scale) - 2;
+    var clientHeight = document.getElementById('globalflags').clientHeight;
+    var clientWidth = document.getElementById('globalflags').clientWidth * (1 / scale) - 10;
 
     // resize the canvas
     canvas.height = clientHeight;
@@ -282,7 +282,7 @@ function showBlackFlag(scale){
     context.stroke();
 
 
-    var textString = 'BLACK';
+    var textString = '';
     var fontsize = (clientWidth/textString.length);
     var divisor = '1.'+textString.length.toString();
     var textheight = (clientHeight / divisor);
@@ -291,7 +291,7 @@ function showBlackFlag(scale){
     ctx.font=fontsize.toString()+"px Verdana";
     context.fillStyle = 'white';
     textWidth = ctx.measureText(textString ).width;
-    ctx.fillText(textString , (clientWidth/2) - (textWidth / 2), textheight);
+    //ctx.fillText(textString , (clientWidth/2) - (textWidth / 2), textheight);
 
 }
 
@@ -305,8 +305,8 @@ function showSafetyFlag(scale){
     var canvas = document.getElementById('safetyFlag');
     var context = canvas.getContext('2d');
 
-    var clientHeight = document.getElementById('globalflags').clientHeight;   
-    var clientWidth = document.getElementById('globalflags').clientWidth * (1 / scale) - 2;
+    var clientHeight = document.getElementById('globalflags').clientHeight;
+    var clientWidth = document.getElementById('globalflags').clientWidth * (1 / scale) - 10;
 
     // resize the canvas
     canvas.height = clientHeight;
@@ -336,8 +336,8 @@ function showSafetyFlag(scale){
     ctx.strokeStyle = 'red';
     ctx.fillRect(0,clientHeight/2 - (barwidth/2),clientWidth,barwidth);
 
-    
-    var textString = 'SAFETY';
+
+    var textString = '';
     var fontsize = (clientWidth/textString.length);
     var divisor = '1.'+textString.length.toString();
     var textheight = (clientHeight / divisor);
@@ -346,7 +346,7 @@ function showSafetyFlag(scale){
     ctx.font= fontsize.toString()+"px Verdana";
     context.fillStyle = 'black';
     textWidth = ctx.measureText(textString ).width;
-    ctx.fillText(textString , (clientWidth/2) - (textWidth / 2), textheight);
+    //ctx.fillText(textString , (clientWidth/2) - (textWidth / 2), textheight);
 }
 
 
@@ -360,8 +360,8 @@ function showRestartFlag(scale){
     var canvas = document.getElementById('restartFlag');
     var context = canvas.getContext('2d');
 
-    var clientHeight = document.getElementById('globalflags').clientHeight;   
-    var clientWidth = document.getElementById('globalflags').clientWidth * (1 / scale) - 2;
+    var clientHeight = document.getElementById('globalflags').clientHeight;
+    var clientWidth = document.getElementById('globalflags').clientWidth * (1 / scale) - 10;
 
     // resize the canvas
     canvas.height = clientHeight;
@@ -381,9 +381,9 @@ function showRestartFlag(scale){
     context.fill();
     context.lineWidth = 1;
     context.strokeStyle = 'black';
-    context.stroke();    
+    context.stroke();
 
-    var textString = 'RESTART';
+    var textString = '';
     var fontsize = (clientWidth/textString.length);
     var divisor = '1.'+textString.length.toString();
     var textheight = (clientHeight / divisor);
@@ -407,8 +407,8 @@ function showStandingYellowFlag(turn, scale){
 	var canvas = document.getElementById('standingYellow');
     var context = canvas.getContext('2d');
 
-    var clientHeight = document.getElementById('localflags').clientHeight;   
-    var clientWidth = document.getElementById('localflags').clientWidth * (1 / scale) - 2;
+    var clientHeight = document.getElementById('localflags').clientHeight;
+    var clientWidth = document.getElementById('localflags').clientWidth * (1 / scale) - 10;
 
     // resize the canvas
     canvas.height = clientHeight;
@@ -422,20 +422,19 @@ function showStandingYellowFlag(turn, scale){
     context.strokeStyle = 'black';
     context.stroke();
 
-    
-	if ( turn ) {
-   		var textString = turn;
-        var fontsize = (clientWidth/textString.length);
-        var divisor = '1.'+textString.length.toString();
-        var textheight = (clientHeight / divisor);
-        var texty = clientHeight;
 
-		var ctx = canvas.getContext("2d");
-		ctx.font=fontsize.toString()+"px Verdana";
-		context.fillStyle = 'black';
-	    textWidth = ctx.measureText(textString ).width;
-		ctx.fillText(textString , (clientWidth/2) - (textWidth / 2),clientHeight);
-	}
+    if ( turn ) {
+            var artificiallength = turn.length + 7;
+            var divisor = '1.'+artificiallength.toString();
+            var divisor = 2.4;            
+            var textheight = (clientHeight / divisor);
+            var textString = turn.trim();
+            var ctx = canvas.getContext("2d");
+            ctx.font= textheight.toString()+"px Verdana";
+            context.fillStyle = 'black';
+            textWidth = ctx.measureText(textString ).width;
+            ctx.fillText(textString , (clientWidth/2) - (textWidth / 2), (clientHeight) - (textheight/2));
+    }
 
 
 }
@@ -454,8 +453,8 @@ function showDebrisFlag(turn, scale){
     var canvas = document.getElementById('debrisFlag');
     var context = canvas.getContext('2d');
 
-    var clientHeight = document.getElementById('localflags').clientHeight;   
-    var clientWidth = document.getElementById('localflags').clientWidth * (1 / scale) - 2;
+    var clientHeight = document.getElementById('localflags').clientHeight;
+    var clientWidth = document.getElementById('localflags').clientWidth * (1 / scale) - 10;
 
 
     // resize the canvas
@@ -503,15 +502,19 @@ function showDebrisFlag(turn, scale){
     ctx.strokeStyle = 'red';
     ctx.fillRect(barwidth * 9,0,barwidth,clientHeight);
 
-    
+
     if ( turn ) {
-            var textheight = (clientHeight / 1.2);
-            var textString = turn;
+
+            var artificiallength = turn.length + 7;
+            var divisor = '1.'+artificiallength.toString();
+            var divisor = 2.4;            
+            var textheight = (clientHeight / divisor);
+            var textString = turn.trim();
             var ctx = c.getContext("2d");
             ctx.font= textheight.toString()+"px Verdana";
             context.fillStyle = 'black';
             textWidth = ctx.measureText(textString ).width;
-            ctx.fillText(textString , (clientWidth/2) - (textWidth / 2), clientHeight);
+            ctx.fillText(textString , (clientWidth/2) - (textWidth / 2), (clientHeight) - (textheight/2));
     }
 
 }
@@ -520,8 +523,8 @@ function hidewavingYellow(scale){
     document.getElementById("wavingYellow").style.display = "none";
     var canvas = document.getElementById('wavingYellow');
     ctx = canvas.getContext('2d');
-    var clientHeight = document.getElementById('localflags').clientHeight;   
-    var clientWidth = document.getElementById('localflags').clientWidth * (1 / scale) - 2;
+    var clientHeight = document.getElementById('localflags').clientHeight;
+    var clientWidth = document.getElementById('localflags').clientWidth * (1 / scale) - 10;
     ctx.clearRect(0, 0, clientWidth, clientHeight);
     clearTimeout(wavingyellowTimeout);
 }
@@ -540,8 +543,8 @@ function blinkwavingYellow(turn, scale, even){
                 var canvas = document.getElementById('wavingYellow');
                 var context = canvas.getContext('2d');
 
-                var clientHeight = document.getElementById('localflags').clientHeight;   
-                var clientWidth = document.getElementById('localflags').clientWidth * (1 / scale) - 2;
+                var clientHeight = document.getElementById('localflags').clientHeight;
+                var clientWidth = document.getElementById('localflags').clientWidth * (1 / scale) - 10;
 
                 // resize the canvas
                 canvas.height = clientHeight;
@@ -572,14 +575,17 @@ function blinkwavingYellow(turn, scale, even){
                 context.stroke();    
 
                 if ( turn ) {
-                        var textheight = (clientHeight / 1.2);
-                        var textString = turn;
+                        var artificiallength = turn.length + 7;
+                        var divisor = '1.'+artificiallength.toString();
+                        var divisor = 2.4;            
+                        var textheight = (clientHeight / divisor);
+                        var textString = turn.trim();
                         var ctx = canvas.getContext("2d");
                         ctx.font= textheight.toString()+"px Verdana";
                         context.fillStyle = 'black';
                         textWidth = ctx.measureText(textString ).width;
-                        ctx.fillText(textString , (clientWidth/2) - (textWidth / 2), clientHeight);
-                }                
+                        ctx.fillText(textString , (clientWidth/2) - (textWidth / 2), (clientHeight) - (textheight/2));
+                }            
 
             } else{
                 even = 1;
@@ -587,7 +593,7 @@ function blinkwavingYellow(turn, scale, even){
                 var context = canvas.getContext('2d');//
 
                 var clientHeight = document.getElementById('localflags').clientHeight;   
-                var clientWidth = document.getElementById('localflags').clientWidth * (1 / scale) - 2;
+                var clientWidth = document.getElementById('localflags').clientWidth * (1 / scale) - 10;
 
                 // resize the canvas
                 canvas.height = clientHeight;
@@ -616,19 +622,22 @@ function blinkwavingYellow(turn, scale, even){
                 context.lineWidth = 1;
                 context.strokeStyle = 'black';
                 context.stroke();
-
                 if ( turn ) {
-                        var textheight = (clientHeight / 1.2);
-                        var textString = turn;
+                        var artificiallength = turn.length + 7;
+                        var divisor = '1.'+artificiallength.toString();
+                        var divisor = 2.4;            
+                        var textheight = (clientHeight / divisor);
+                        var textString = turn.trim();
                         var ctx = canvas.getContext("2d");
                         ctx.font= textheight.toString()+"px Verdana";
                         context.fillStyle = 'black';
                         textWidth = ctx.measureText(textString ).width;
-                        ctx.fillText(textString , (clientWidth/2) - (textWidth / 2), clientHeight);
-                }                    
+                        ctx.fillText(textString , (clientWidth/2) - (textWidth / 2), (clientHeight) - (textheight/2));
+                }                 
             }
             
-randomrefresh = 500;
+randomrefresh = 250;
 wavingyellowTimeout = setTimeout(blinkwavingYellow, randomrefresh, turn, scale, even);    
         
 }
+
