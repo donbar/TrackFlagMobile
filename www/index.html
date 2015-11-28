@@ -3,261 +3,54 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
-    <title></title>
-
+    <title>TrackFlag - Real-time Racetrack Flags</title>
     <link href="lib/ionic/css/ionic.css" rel="stylesheet">
     <link href="css/style.css" rel="stylesheet">
-
-    <!-- IF using Sass (run gulp sass first), then uncomment below and remove the CSS includes above
-    <link href="css/ionic.app.css" rel="stylesheet">
-    -->
-
-    <!-- ionic/angularjs js -->
     <script src="lib/ionic/js/ionic.bundle.js"></script>
-
-    <!-- cordova script (this will be a 404 during development) -->
     <script src="cordova.js"></script>
-
-    <!-- your app's js -->
     <script src="js/app.js"></script>
     <script src="js/trackflag.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
   </head>
-  <body ng-app="trackflag">
+  <body ng-app="trackflag" onload="checkPosition();getRaceEvent();getGlobalCommand();">
     <form name='trackflag'>
-    <input type='text' id='event_id' name='event_id'></input>
-		<div id='runscript'></div>
-
-    <ion-pane>
-      <ion-content>
+      <input type='hidden' id='event_id' name='event_id'></input>
+  		<div id='runscript' style='display: none'></div>
+  		<div id='runscriptlocal' style='display: none'></div>
+      <div id='lostconnection' class='lostconnection'><img src='img/lostconnection.jpg'></div>
       <div id='divlogo'>
-        <center><img src='img/nasalogo.png' border=0></center>
+         <center><img src='img/nasalogo.png' border=0></center>
       </div>
-      <div id="txtMessage"></div>
-			<div id="flagarea"></div>
-      <center>
-      <span id="WavingYellow">
+      <div id='geocoords' style='display: none'>
+        <input type='text' id='startLat' name='startLat'>
+        <input type='text' id='startLon' name='startLon'>
+        <input type='text' id='geotime' name='geotime'>
+        <input type='text' id='localtime' name='localtime'>
+        <input type='text' id='controlmessages' name='controlmessages' value='0'>
+      </div>
+      <div id='messagesfromcontrol'></div>
+      <span id="txtMessage"></span>
 
-        <canvas id="dblyellowCanvasLeft" width="200" height="100"></canvas>
-        <script>
-          var canvas = document.getElementById('dblyellowCanvasLeft');
-          var context = canvas.getContext('2d');
+  			<div id='container' class='container'>
+  			<div id='globalflags' class="globalflags">
+          <canvas id="doubleyellowFlag"></canvas>
+          <canvas id="redFlag"></canvas>
+          <canvas id="greenFlag"></canvas>
+          <canvas id="whiteFlag"></canvas>
+          <canvas id="blackFlag"></canvas>
+          <canvas id="safetyFlag"></canvas>
+          <canvas id="restartFlag"></canvas>
+          <canvas id="checkeredFlag" class='checkered' style='display:none'></canvas>
 
-          context.beginPath();
-          context.rect(0, 0, 200, 100);
-          context.fillStyle = 'yellow';
-          context.fill();
-          context.lineWidth = 1;
-          context.strokeStyle = 'black';
-          context.stroke();
-        </script>
-
-        <canvas id="dblyellowCanvasRight" width="200" height="100"></canvas>
-        <script>
-          var canvas = document.getElementById('dblyellowCanvasRight');
-          var context = canvas.getContext('2d');
-
-          context.beginPath();
-          context.rect(0, 0, 200, 100);
-          context.fillStyle = 'yellow';
-          context.fill();
-          context.lineWidth = 1;
-          context.strokeStyle = 'black';
-          context.stroke();
-        </script>
+    		</div>
+  	    <div id='localflags' class='localflags'>
+          <canvas id="debrisFlag"></canvas>
+          <canvas id="standingYellow"></canvas>
+          <canvas id="wavingYellow"></canvas>
+          <canvas id="oilFlag"></canvas>
+        </div>
+      </div>
       </span>
-
-      <span id='divRedFlag'>
-        <canvas id="redFlag" width="200" height="100"></canvas>
-        <script>
-          var canvas = document.getElementById('redFlag');
-          var context = canvas.getContext('2d');
-
-          context.beginPath();
-          context.rect(0, 0, 200, 100);
-          context.fillStyle = 'red';
-          context.fill();
-          context.lineWidth = 1;
-          context.strokeStyle = 'black';
-          context.stroke();
-        </script>
-      </span>
-
-      <span id='divGreenFlag'>
-        <canvas id="greenFlag" width="200" height="100"></canvas>
-        <script>
-          var canvas = document.getElementById('greenFlag');
-          var context = canvas.getContext('2d');
-
-          context.beginPath();
-          context.rect(0, 0, 200, 100);
-          context.fillStyle = 'green';
-          context.fill();
-          context.lineWidth = 1;
-          context.strokeStyle = 'black';
-          context.stroke();
-        </script>
-      </span>
-
-      <span id='divWhiteFlag'>
-        <canvas id="whiteFlag" width="200" height="100"></canvas>
-        <script>
-          var canvas = document.getElementById('whiteFlag');
-          var context = canvas.getContext('2d');
-
-          context.beginPath();
-          context.rect(0, 0, 200, 100);
-          context.fillStyle = 'white';
-          context.fill();
-          context.lineWidth = 1;
-          context.strokeStyle = 'black';
-          context.stroke();
-        </script>
-      </span>
-
-      <span id='divBlackFlag'>
-        <canvas id="blackFlag" width="200" height="100"></canvas>
-        <script>
-          var canvas = document.getElementById('blackFlag');
-          var context = canvas.getContext('2d');
-
-          context.beginPath();
-          context.rect(0, 0, 200, 100);
-          context.fillStyle = 'black';
-          context.fill();
-          context.lineWidth = 1;
-          context.strokeStyle = 'white';
-          context.stroke();
-        </script>
-      </span>
-
-      <span id='divSafetyFlag'>
-        <canvas id="safetyFlag" width="200" height="100"></canvas>
-        <script>
-          var canvas = document.getElementById('safetyFlag');
-          var context = canvas.getContext('2d');
-
-          context.beginPath();
-          context.rect(0, 0, 200, 100);
-          context.fillStyle = 'white';
-          context.fill();
-          context.lineWidth = 1;
-          context.strokeStyle = 'red';
-          context.stroke();
-
-          var c=document.getElementById("safetyFlag");
-          var ctx=c.getContext("2d");
-          ctx.fillStyle = 'red';
-          ctx.lineWidth = 1;
-          ctx.strokeStyle = 'red';
-          ctx.fillRect(90,0,20,200);
-
-          var c=document.getElementById("safetyFlag");
-          var ctx=c.getContext("2d");
-          ctx.fillStyle = 'red';
-          ctx.lineWidth = 1;
-          ctx.strokeStyle = 'red';
-          ctx.fillRect(0,40,200,20);
-
-        </script>
-      </span>
-
-      <span id='divDebrisFlag'>
-        <canvas id="debrisFlag" width="200" height="100"></canvas>
-        <script>
-          var canvas = document.getElementById('debrisFlag');
-          var context = canvas.getContext('2d');
-
-          context.beginPath();
-          context.rect(0, 0, 200, 100);
-          context.fillStyle = 'yellow';
-          context.fill();
-          context.lineWidth = 1;
-          context.strokeStyle = 'red';
-          context.stroke();
-
-          var c=document.getElementById("debrisFlag");
-          var ctx=c.getContext("2d");
-          ctx.fillStyle = 'red';
-          ctx.lineWidth = 1;
-          ctx.strokeStyle = 'red';
-          ctx.fillRect(20,0,20,100);
-
-          var c=document.getElementById("debrisFlag");
-          var ctx=c.getContext("2d");
-          ctx.fillStyle = 'red';
-          ctx.lineWidth = 1;
-          ctx.strokeStyle = 'red';
-          ctx.fillRect(60,0,20,100);
-
-          var c=document.getElementById("debrisFlag");
-          var ctx=c.getContext("2d");
-          ctx.fillStyle = 'red';
-          ctx.lineWidth = 1;
-          ctx.strokeStyle = 'red';
-          ctx.fillRect(100,0,20,100);
-
-          var c=document.getElementById("debrisFlag");
-          var ctx=c.getContext("2d");
-          ctx.fillStyle = 'red';
-          ctx.lineWidth = 1;
-          ctx.strokeStyle = 'red';
-          ctx.fillRect(140,0,20,100);
-
-          var c=document.getElementById("debrisFlag");
-          var ctx=c.getContext("2d");
-          ctx.fillStyle = 'red';
-          ctx.lineWidth = 1;
-          ctx.strokeStyle = 'red';
-          ctx.fillRect(180,0,20,100);
-
-        </script>
-      </span>
-
-      <span id='divRestartFlag'>
-        <canvas id="restartFlag" width="200" height="100"></canvas>
-        <script>
-          var canvas = document.getElementById('restartFlag');
-          var context = canvas.getContext('2d');
-
-          context.beginPath();
-          context.rect(0, 0, 200, 100);
-          context.fillStyle = 'red';
-          context.fill();
-          context.lineWidth = 1;
-          context.strokeStyle = 'black';
-          context.stroke();
-
-          var c=document.getElementById("restartFlag");
-          var ctx=c.getContext("2d");
-          ctx.fillStyle = 'yellow';
-          ctx.lineWidth = 1;
-          ctx.strokeStyle = 'red';
-          ctx.fillRect(100,0,100,100);
-
-        </script>
-      </span>
-
-        <script>
-          blinkWavingYellow();
-          hideWavingYellow();
-          hideRedFlag();
-          hideGreenFlag();
-          hideWhiteFlag();
-          hideBlackFlag();
-          hideSafetyFlag();
-          hideDebrisFlag();
-          hideRestartFlag();
-        </script>
-
-    </center>
-      </ion-content>
-    </ion-pane>
-
-    </form>
+	  </form>
   </body>
-  <script>
-    getLocation();
-		checkforCommand();
-	</script>
 </html>
-

@@ -27,10 +27,35 @@ body {
     .applandscape {
         position:absolute;             /* position in the center of the screen */
         left: 0%;
-        top:10%;        
+        top:10%;
     }
 }
 .blink {
     animation:fade 3000ms infinite;
     -webkit-animation:fade 3000ms infinite;
 }
+.lostconnection{
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1;
+    display: none;
+}
+.checkered{
+    background-color: white;
+    background-image: linear-gradient(45deg, black 25%, transparent 25%, transparent 75%, black 75%, black), 
+        linear-gradient(45deg, black 25%, transparent 25%, transparent 75%, black 75%, black);
+    background-size:50px 50px;
+    background-position: 0 0, 25px 25px;
+}
+
+
+
+div.container{ background: #ffffff; height: 100%; width: 100%; position:absolute; display:inline-block;}
+div.hidecontainer{ background: #ffffff; height: 100%; width: 100%; position:absolute; display:none;}
+
+div.globalflags{background: #ffffff; height: 50%; width: 100%; text-align: center; vertical-align: middle; position:absolute; }
+div.localflags{background: #ffffff; height: 50%; width: 100%; text-align: center; vertical-align: middle; position:absolute; top: 50%; right:0%;}
+div.hidemessages{ background: #ffffff; height: 100%; width: 100%; position:absolute; display: none;}
+div.showmessages{ background: #ffffff; height: 100%; width: 100%; position:absolute; display: inline-block;}
