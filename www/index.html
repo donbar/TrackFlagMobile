@@ -1,6 +1,4 @@
 <!DOCTYPE html>
-
-
 <html>
   <head>
     <meta charset="utf-8">
@@ -23,14 +21,16 @@
       <div id='divlogo'>
          <center><img src='img/nasalogo.png' border=0></center>
       </div>
-      <div id='geocoords' style='none'>
+      <div id='geocoords' style='display: none'>
         <input type='text' id='startLat' name='startLat'>
         <input type='text' id='startLon' name='startLon'>
         <input type='text' id='geotime' name='geotime'>
         <input type='text' id='localtime' name='localtime'>
+        <input type='text' id='controlmessages' name='controlmessages' value='0'>
       </div>
+      <div id='messagesfromcontrol'></div>
       <span id="txtMessage"></span>
-        <div id='controlmessages' class='hidemessages'></div>
+
   			<div id='container' class='container'>
   			<div id='globalflags' class="globalflags">
           <canvas id="doubleyellowFlag"></canvas>

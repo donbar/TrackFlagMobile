@@ -3,10 +3,28 @@ var geteventtimeout;
 
 
 
+/*
 $ionicPlatform.ready(function() {
    //Check the position with $cordovaGeolocation. This one is just a function
     checkPosition();
 });
+*/
+
+function getConfig(){
+    var xmlhttp = new XMLHttpRequest();
+    xmlhttp.onreadystatechange = function() {
+        if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+            eval(xmlhttp.responseText);
+            
+        }else if((xmlhttp.status == 0 || xmlhttp.status == 404) && xmlhttp.readyState == 4){
+            // lost connection with server, clear screen and show oopsies div
+            
+        }
+    }
+    var url = 'https://trackflag.nasasafety.com/server/configajax.php?event_id=' + document.getElementById('event_id').value.toString();
+    xmlhttp.open("GET", url, true);
+    xmlhttp.send();
+}
 
 
 function checkPosition(){
@@ -35,24 +53,24 @@ function checkPosition(){
         // If no event selected, ignore this stuff.
         if (document.getElementById('startLat').value == startPos.coords.latitude.toFixed(4)
             && document.getElementById('startLon').value == startPos.coords.longitude.toFixed(4)
-            && document.getElementById('event_id').value != ''){
+            && document.getElementById('event_id').value != ''
+            && document.getElementById("controlmessages").value != 0){
                 // car hasn't moved, been 10 seconds yet?
                 // someday we'll add GPS for paddock/pre-grid here
                 if (document.getElementById('geotime').value + 10 > t){
                     //show text messages
-                    //document.getElementById('container').className='hidecontainer';
-                    //document.getElementById('controlmessages').className='showmessages';
-                    showDownOilFlag(1,4);
+                    document.getElementById('container').className='hidecontainer';
+                    document.getElementById('messagesfromcontrol').className='showmessages';
                     var xmlhttp = new XMLHttpRequest();
                     xmlhttp.onreadystatechange = function() {
                         if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
                             //document.getElementById("lostconnection").style.display = "none";
                             
-                            document.getElementById('controlmessages').innerHTML = xmlhttp.responseText;
+                            document.getElementById('messagesfromcontrol').innerHTML = xmlhttp.responseText;
                             
                         }else if((xmlhttp.status == 0 || xmlhttp.status == 404) && xmlhttp.readyState == 4){
                             // lost connection with server, clear screen and show oopsies div
-                            document.getElementById('controlmessages').innerHTML = 'Connection lost...';
+                            document.getElementById('messagesfromcontrol').innerHTML = 'Connection lost...';
                         }
                     }
                     var url = 'https://trackflag.nasasafety.com/server/controlmessageajax.php?event_id=' + document.getElementById('event_id').value.toString();
@@ -114,11 +132,6 @@ function clearLogo(){
     document.getElementById("localflags").style.backgroundColor = "#c0c0c0";
     document.getElementById("container").display = "none";
 }
-
-function clearMessage(){
-    document.getElementById("txtMessage").innerHTML = "";
-}
-
 
 function getGlobalCommand() {
             var xmlhttp = new XMLHttpRequest();
