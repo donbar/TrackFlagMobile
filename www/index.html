@@ -12,23 +12,25 @@
     <script src="js/trackflag.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
   </head>
-  <body ng-app="trackflag" onload="checkPosition();getRaceEvent();getGlobalCommand();">
+  <body ng-app="trackflag" onload="checkPosition();getInCar();">
     <form name='trackflag'>
       <input type='hidden' id='event_id' name='event_id'></input>
   		<div id='runscript' style='display: none'></div>
   		<div id='runscriptlocal' style='display: none'></div>
       <div id='lostconnection' class='lostconnection'><img src='img/lostconnection.jpg'></div>
       <div id='divlogo'>
-         <center><img src='img/checkered-flags-white.png' border=0></center>
+         <center><img src='img/checkered-flags-white.png' border=0 height='75px'></center>
       </div>
-      <div id='geocoords' style='display: none'>
-        <input type='text' id='startLat' name='startLat'>
+              <input type='text' id='startLat' name='startLat'>
         <input type='text' id='startLon' name='startLon'>
+      <div id='geocoords' style='display: none'>
+        <input type='text' id='incar' name='incar'>
+
         <input type='text' id='geotime' name='geotime'>
         <input type='text' id='localtime' name='localtime'>
         <input type='text' id='controlmessages' name='controlmessages' value='0'>
       </div>
-      <div id='messagesfromcontrol'></div>
+      <div id='messagesfromcontrol' width='100%'></div>
       <span id="txtMessage"></span>
 
   			<div id='container' class='container'>
