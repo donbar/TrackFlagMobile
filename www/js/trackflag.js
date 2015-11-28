@@ -133,6 +133,11 @@ function clearLogo(){
     document.getElementById("container").display = "none";
 }
 
+function clearMessage(){
+    document.getElementById("txtMessage").innerHTML = "";
+}
+
+
 function getGlobalCommand() {
             var xmlhttp = new XMLHttpRequest();
             xmlhttp.onreadystatechange = function() {
